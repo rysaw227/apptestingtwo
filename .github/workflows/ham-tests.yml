@@ -1,0 +1,25 @@
+name: Ham diagnostics tests
+on:
+  push:
+    paths:
+      - 'ham-roomba/**'
+      - '.github/workflows/ham-tests.yml'
+  pull_request:
+    paths:
+      - 'ham-roomba/**'
+      - '.github/workflows/ham-tests.yml'
+  workflow_dispatch:
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: node --check ham-roomba/ham.cjs
+      - name: Run offline mock tests
+        run: node --test ham-roomba/ham.test.cjs
